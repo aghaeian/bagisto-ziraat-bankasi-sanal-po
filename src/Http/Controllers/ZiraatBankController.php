@@ -46,7 +46,12 @@ class ZiraatBankController extends Controller
         if ($merchantId && $privateKey && $publicKey) {
             try {
                 $clientToken = core()->getConfigData('sales.payment_methods.ziraat_bank.ziraat_bank_tokenization_key');
-                $grand_total = Cart::getCart()->base_grand_total;
+                $cart = Cart::getCart();
+
+                // Sepet verisini kontrol edin
+                dd($cart); // Bu satırı geçici olarak ekleyin, sepet verilerini kontrol etmek için
+
+                $grand_total = number_format($cart->base_grand_total, 2, ',', '.');
 
                 return view('ziraat_bank::drop-in-ui', compact('clientToken', 'grand_total'));
             } catch (\Exception $e) {
@@ -68,7 +73,7 @@ class ZiraatBankController extends Controller
         try {
             $payload = request()->json()->all();
 
-            if (! isset($payload['nonce'])) {
+            if (!isset($payload['nonce'])) {
                 return response()->json(['error' => 'Nonce not provided'], 400);
             }
 
@@ -76,9 +81,9 @@ class ZiraatBankController extends Controller
             $cartAmount = Cart::getCart()->base_grand_total;
 
             $result = $gateway->transaction()->sale([
-                'amount'             => $cartAmount,
+                'amount' => $cartAmount,
                 'paymentMethodNonce' => $nonceFromTheClient,
-                'options'            => [
+                'options' => [
                     'submitForSettlement' => true,
                 ],
             ]);
