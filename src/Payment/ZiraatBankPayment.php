@@ -36,4 +36,3 @@ class ZiraatBankPayment extends Payment
         return $url ? Storage::url($url) : bagisto_asset('images/review.png', 'shop');
     }
 }
-

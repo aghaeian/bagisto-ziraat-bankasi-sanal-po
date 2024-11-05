@@ -125,12 +125,12 @@
                             if (data.success) {
                                 location.href = returnRoute;
                             } else {
-                                alert('{{ __('ziraat_bank::app.something-went-wrong')}} â ï¸'+ data.error);
+                                alert('{{ __('ziraat_bank::app.something-went-wrong')}} ⚠️'+ data.error);
                                 location.href = "{{ route('shop.checkout.onepage.index') }}";
                             }
                         })
                         .catch(error => {
-                            alert('{{ __('ziraat_bank::app.something-went-wrong')}} â ï¸'+ error);
+                            alert('{{ __('ziraat_bank::app.something-went-wrong')}} ⚠️'+ error);
                             location.href = "{{ route('shop.checkout.onepage.index') }}";
                         });
                     });
