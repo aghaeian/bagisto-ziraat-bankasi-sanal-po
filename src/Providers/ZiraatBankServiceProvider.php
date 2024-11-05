@@ -1,6 +1,6 @@
 <?php
 
-namespace Aghaeian\ZiraatBank\Http\Controllers;
+namespace Aghaeian\ZiraatBank\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
