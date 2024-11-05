@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Webkul\ZiraatBank\Http\Controllers\ZiraatBankController;
+use Aghaeian\ZiraatBank\Http\Controllers\ZiraatBankController;
 
 Route::group(['middleware' => ['web'], 'prefix' => 'ziraat_bank/payment'], function () {
     Route::controller(ZiraatBankController::class)->group(function () {
