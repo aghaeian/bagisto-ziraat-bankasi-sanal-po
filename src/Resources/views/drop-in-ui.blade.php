@@ -50,33 +50,26 @@
 </head>
 
 <body>
-    <div
-        class="container"
-        id="dropin-container"
-    >
+    <div class="container" id="dropin-container">
+        <h3>{{ __('ziraat_bank::app.payment-details') }}</h3>
+        <p>Miktar: {{ $grand_total }} TL</p>
     </div>
 
     <div class="action">
-        <button
-            class="btn"
-            id="submit-button"
-        >
+        <button class="btn" id="submit-button">
             {{ __('ziraat_bank::app.proceed-to-payment') }}
         </button>
 
-        <button
-            class="btn"
-            id="back-button"
-        >
+        <button class="btn" id="back-button">
             {{ __('shop::app.checkout.onepage.address.back') }}
         </button>
     </div>
 
-    <p>{{ __('admin::app.sales.transactions.index.datagrid.transaction-amount') }} : {{ $grand_total }}</p>
     <p>** {{ __('ziraat_bank::app.do-not-reload-page') }} **</p>
 
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <script src="https://js.ziraat_bankgateway.com/web/dropin/1.40.2/js/dropin.min.js"></script><script>
+    <script src="https://js.ziraat_bankgateway.com/web/dropin/1.40.2/js/dropin.min.js"></script>
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             var clientToken = @json($clientToken);
             var button = document.querySelector('#submit-button');
@@ -84,7 +77,6 @@
             var returnRoute = "{{ route('shop.checkout.onepage.success') }}";
 
             var csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
-
             var csrfToken = csrfTokenMeta.getAttribute('content');
 
             ziraat_bank.dropin.create({
@@ -92,6 +84,8 @@
                 container: '#dropin-container'
             }, function(createErr, instance) {
                 if (createErr) {
+                    console.error('Drop-in creation error:', createErr);
+                    alert('{{ __('ziraat_bank::app.something-went-wrong') }}');
                     return;
                 }
 
@@ -102,6 +96,8 @@
 
                     instance.requestPaymentMethod(function(err, payload) {
                         if (err) {
+                            console.error('Request payment method error:', err);
+                            alert('{{ __('ziraat_bank::app.payment-method-error') }}');
                             return;
                         }
 
@@ -125,12 +121,13 @@
                             if (data.success) {
                                 location.href = returnRoute;
                             } else {
-                                alert('{{ __('ziraat_bank::app.something-went-wrong')}} ⚠️'+ data.error);
+                                alert('{{ __('ziraat_bank::app.something-went-wrong') }} ⚠️ ' + (data.error || 'Unknown error'));
                                 location.href = "{{ route('shop.checkout.onepage.index') }}";
                             }
                         })
                         .catch(error => {
-                            alert('{{ __('ziraat_bank::app.something-went-wrong')}} ⚠️'+ error);
+                            console.error('Transaction error:', error);
+                            alert('{{ __('ziraat_bank::app.something-went-wrong') }} ⚠️ ' + error.message);
                             location.href = "{{ route('shop.checkout.onepage.index') }}";
                         });
                     });
@@ -143,9 +140,7 @@
         });
 
         sessionStorage.setItem('paymentStatus', 'canceled');
-    </script>
 
-    <script>
         function beforeUnloadHandler(e) {
             e.preventDefault();
             e.returnValue = '';
