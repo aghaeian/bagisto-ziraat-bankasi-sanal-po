@@ -1,4 +1,3 @@
-
 <?php
 
 return [
@@ -8,6 +7,8 @@ return [
     'proceed-to-payment'   => 'Ödemeye devam et',
     'do-not-reload-page'   => 'Lütfen ödeme işlenirken sayfayı yenilemeyin',
     'payment-successfull'  => 'Ödeme başarılı',
+    'payment-details'      => 'Ödeme Bilgileri', // Eklendi
+    'transaction-amount'   => 'Miktar', // Eklendi
 
     'system' => [
         'title'       => 'ZiraatBank',
