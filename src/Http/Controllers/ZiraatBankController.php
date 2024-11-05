@@ -1,6 +1,6 @@
 <?php
 
-namespace Webkul\ZiraatBank\Http\Controllers;
+namespace Aghaeian\ZiraatBank\Http\Controllers;
 
 use ZiraatBank\Gateway as ZiraatBank_Gateway;
 use Illuminate\Support\Facades\Log;
