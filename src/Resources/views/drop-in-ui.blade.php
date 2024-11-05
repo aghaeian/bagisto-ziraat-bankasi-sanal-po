@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ core()->getConfigData('sales.payment_methods.ziraat_bank.title')}}</title>
+    <title>{{ __('ziraat_bank::app.payment-details') }}</title>
     <link rel="shortcut icon" href="{{ bagisto_asset('images/favicon.ico', 'shop') }}" type="image/x-icon">
 
     <style>
