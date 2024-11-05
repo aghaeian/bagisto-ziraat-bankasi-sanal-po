@@ -1,6 +1,6 @@
 <?php
 
-namespace Webkul\ZiraatBank\Http\Controllers;
+namespace Aghaeian\ZiraatBank\Http\Controllers;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
