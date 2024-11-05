@@ -4,7 +4,6 @@ namespace Aghaeian\ZiraatBank\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 use Webkul\Checkout\Facades\Cart;
 use Webkul\Sales\Repositories\InvoiceRepository;
 use Webkul\Sales\Repositories\OrderRepository;
@@ -40,17 +39,18 @@ class ZiraatBankController extends Controller
     {
         $configKey = core()->getConfigData('sales.payment_methods.ziraat_bank.sandbox') ? 'ziraat_bank_sandbox' : 'ziraat_bank';
 
-        $merchentId = core()->getConfigData("sales.payment_methods.ziraat_bank.{$configKey}_merchant_id");
+        $merchantId = core()->getConfigData("sales.payment_methods.ziraat_bank.{$configKey}_merchant_id");
         $privateKey = core()->getConfigData("sales.payment_methods.ziraat_bank.{$configKey}_private_key");
         $publicKey = core()->getConfigData("sales.payment_methods.ziraat_bank.{$configKey}_public_key");
 
-        if ($merchentId && $privateKey && $publicKey) {
+        if ($merchantId && $privateKey && $publicKey) {
             try {
                 $clientToken = core()->getConfigData('sales.payment_methods.ziraat_bank.ziraat_bank_tokenization_key');
                 $grand_total = Cart::getCart()->base_grand_total;
 
                 return view('ziraat_bank::drop-in-ui', compact('clientToken', 'grand_total'));
             } catch (\Exception $e) {
+                Log::error('Redirect error in ZiraatBankController: ', ['exception' => $e]);
                 session()->flash('error', trans('ziraat_bank::app.something-went-wrong'));
             }
         } else {
@@ -105,6 +105,7 @@ class ZiraatBankController extends Controller
                 return response()->json(['error' => 'Transaction failed', 'details' => $result->message], 500);
             }
         } catch (\Exception $e) {
+            Log::error('Transaction error in ZiraatBankController: ', ['exception' => $e]);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
