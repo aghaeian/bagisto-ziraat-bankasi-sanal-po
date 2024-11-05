@@ -1,6 +1,6 @@
 <?php
 
-namespace Webkul\ZiraatBank\Payment;
+namespace Aghaeian\ZiraatBank\Http\Controllers;
 
 use Illuminate\Support\Facades\Storage;
 use Webkul\Payment\Payment\Payment;
