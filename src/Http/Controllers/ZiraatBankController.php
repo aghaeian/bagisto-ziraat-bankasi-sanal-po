@@ -2,20 +2,17 @@
 
 namespace Aghaeian\ZiraatBank\Http\Controllers;
 
-use ZiraatBank\Gateway as ZiraatBank_Gateway;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Webkul\Checkout\Facades\Cart;
 use Webkul\Sales\Repositories\InvoiceRepository;
 use Webkul\Sales\Repositories\OrderRepository;
 use Webkul\Sales\Transformers\OrderResource;
+use ZiraatBank\Gateway as ZiraatBank_Gateway; // Eğer mevcut değilse, doğru bir sınıfla değiştirin
 
 class ZiraatBankController extends Controller
 {
-    /**
-     * Order object
-     *
-     * @var object
-     */
     protected $order;
 
     public function __construct(
@@ -23,11 +20,6 @@ class ZiraatBankController extends Controller
         protected InvoiceRepository $invoiceRepository
     ) {}
 
-    /**
-     * Creating new Gateway
-     *
-     * @return object
-     */
     public function createZiraatBankGateway($environment)
     {
         $configKey = $environment === 'sandbox' ? 'ziraat_bank_sandbox' : 'ziraat_bank';
@@ -44,11 +36,6 @@ class ZiraatBankController extends Controller
         ]);
     }
 
-    /**
-     * Redirects to the ZiraatBank.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function redirect()
     {
         $configKey = core()->getConfigData('sales.payment_methods.ziraat_bank.sandbox') ? 'ziraat_bank_sandbox' : 'ziraat_bank';
@@ -57,14 +44,9 @@ class ZiraatBankController extends Controller
         $privateKey = core()->getConfigData("sales.payment_methods.ziraat_bank.{$configKey}_private_key");
         $publicKey = core()->getConfigData("sales.payment_methods.ziraat_bank.{$configKey}_public_key");
 
-        if (
-            $merchentId
-            && $privateKey
-            && $publicKey
-        ) {
+        if ($merchentId && $privateKey && $publicKey) {
             try {
                 $clientToken = core()->getConfigData('sales.payment_methods.ziraat_bank.ziraat_bank_tokenization_key');
-
                 $grand_total = Cart::getCart()->base_grand_total;
 
                 return view('ziraat_bank::drop-in-ui', compact('clientToken', 'grand_total'));
@@ -78,11 +60,6 @@ class ZiraatBankController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Perform the transaction
-     *
-     * @return response
-     */
     public function transaction()
     {
         $environment = core()->getConfigData('sales.payment_methods.ziraat_bank.sandbox') ? 'sandbox' : 'production';
@@ -132,11 +109,6 @@ class ZiraatBankController extends Controller
         }
     }
 
-    /**
-     * Prepares order's invoice data for creation
-     *
-     * @return array
-     */
     protected function prepareInvoiceData()
     {
         $invoiceData = [
