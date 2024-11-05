@@ -52,7 +52,7 @@
 <body>
     <div class="container" id="dropin-container">
         <h3>{{ __('ziraat_bank::app.payment-details') }}</h3>
-        <p>Miktar: {{ $grand_total }} TL</p>
+        <p>{{ __('ziraat_bank::app.transaction-amount') }} : {{ $grand_total }} TL</p>
     </div>
 
     <div class="action">
@@ -121,13 +121,13 @@
                             if (data.success) {
                                 location.href = returnRoute;
                             } else {
-                                alert('{{ __('ziraat_bank::app.something-went-wrong') }} ⚠️ ' + (data.error || 'Unknown error'));
+                                alert('{{ __('ziraat_bank::app.something-went-wrong')}} ⚠️ ' + (data.error || 'Unknown error'));
                                 location.href = "{{ route('shop.checkout.onepage.index') }}";
                             }
                         })
                         .catch(error => {
                             console.error('Transaction error:', error);
-                            alert('{{ __('ziraat_bank::app.something-went-wrong') }} ⚠️ ' + error.message);
+                            alert('{{ __('ziraat_bank::app.something-went-wrong')}} ⚠️ ' + error.message);
                             location.href = "{{ route('shop.checkout.onepage.index') }}";
                         });
                     });
