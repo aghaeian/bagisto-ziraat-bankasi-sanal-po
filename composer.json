@@ -1,5 +1,5 @@
 {
-    "name": "webkul/ziraat-bank-payment",
+    "name": "aghaeian/ziraat-bank-payment",
     "description": "Ziraat Bank Payment Integration for Bagisto",
     "type": "bagisto-payment-method",
     "license": "MIT",
