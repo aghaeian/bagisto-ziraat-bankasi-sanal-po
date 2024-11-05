@@ -5,8 +5,8 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Webkul",
-            "email": "support@webkul.com"
+            "name": "Aghaeian",
+            "email": "aghaieyan@gmail.com"
         }
     ],
     "require": {
@@ -21,7 +21,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Webkul\\ZiraatBank\\Providers\\ZiraatBankServiceProvider"
+                "Aghaeian\\ZiraatBank\\Providers\\ZiraatBankServiceProvider"
             ]
         }
     }
